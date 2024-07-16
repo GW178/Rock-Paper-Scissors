@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rock-Paper-Scissors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #111;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .game-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 36px;
+            color: #111;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+        }
+        .color-rock {
+            color: #4caf50;
+        }
+        .color-paper {
+            color: #ffeb3b;
+        }
+        .color-scissors {
+            color: #f44336;
+        }
+        .instruction {
+            font-size: 20px;
+            color: #111;
+            margin-bottom: 30px;
+        }
+        .choices-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .choice-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .choices-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .choice-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin: 20px 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        .choice-button:hover {
+            opacity: 1;
+        }
+        .choice-button img {
+            width: 130px;
+            height: 130px;
+            display: block;
+        }
+        .outcome-message {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 30px;
+            text-transform: uppercase;
+        }
+        .outcome-win {
+            color: #4caf50;
+            text-shadow: 0 0 10px #4caf50, 0 0 20px #4caf50, 0 0 30px #4caf50;
+        }
+        .outcome-lose {
+            color: #f44336;
+            text-shadow: 0 0 10px #f44336, 0 0 20px #f44336, 0 0 30px #f44336;
+        }
+        .outcome-tie {
+            color: #ffeb3b;
+            text-shadow: 0 0 10px #ff9800, 0 0 20px #ff9800, 0 0 30px #ff9800;
+        }
+        .play-again-button {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        .play-again-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>
+            <span class="color-rock">Rock</span>-
+            <span class="color-paper">Paper</span>-
+            <span class="color-scissors">Scissors</span>
+        </h1>
+        <p class="instruction">You play against the computer. Pick your fighter for the battle!</p>
+        {% if not user_choice %}
+        <div class="choices-container">
+            <div class="choice-column">
+                <h2 class="choices-title">Your Choice</h2>
+                <form action="/play" method="post">
+                    <button type="submit" name="choice" value="rock" class="choice-button"><img src="{{ url_for('static', filename='rock.png') }}" alt="Rock"></button>
+                    <button type="submit" name="choice" value="paper" class="choice-button"><img src="{{ url_for('static', filename='paper.png') }}" alt="Paper"></button>
+                    <button type="submit" name="choice" value="scissors" class="choice-button"><img src="{{ url_for('static', filename='scissors.png') }}" alt="Scissors"></button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="choices-container">
+            <div class="choice-column">
+                <h2 class="choices-title">Your Choice</h2>
+                <img src="{{ url_for('static', filename=user_choice + '.png') }}" alt="{{ user_choice }}" style="width: 130px; height: 130px;">
+            </div>
+            <div class="choice-column">
+                <h2 class="choices-title">Computer's Choice</h2>
+                <img src="{{ url_for('static', filename=computer_choice + '.png') }}" alt="{{ computer_choice }}" style="width: 130px; height: 130px;">
+            </div>
+        </div>
+        <p class="outcome-message {% if outcome == 'win' %}outcome-win{% elif outcome == 'lose' %}outcome-lose{% else %}outcome-tie{% endif %}">
+            {% if outcome == 'win' %}
+                You won!
+            {% elif outcome == 'lose' %}
+                You lost!
+            {% else %}
+                It's a tie!
+            {% endif %}
+        </p>
+        <form action="/" method="get">
+            <button type="submit" class="play-again-button">Play Again</button>
+        </form>
+        {% endif %}
+    </div>
+</body>
+</html>
